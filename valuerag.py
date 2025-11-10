@@ -195,7 +195,7 @@ class DocumentRAG:
 
 class ValueRAG:
     def __init__(self,
-                 model_name: str = "llama3.1:8b",
+                 model_name: str = "llama3.1:latest",
                  base_url: str = "http://localhost:11434",
                  use_value_conditioning: bool = True,
                  use_weighted_retrieval: bool = True,
@@ -276,7 +276,7 @@ class ValueRAG:
         }
 
         try:
-            response = requests.post(self.api_url, json=payload, timeout=120)
+            response = requests.post(self.api_url, json=payload, timeout=300)
             response.raise_for_status()
 
             result = response.json()
@@ -490,7 +490,7 @@ def main():
             print("  python valuerag.py              # Interactive mode")
             print("  python valuerag.py queries.txt  # Batch evaluation mode")
             print("\nEnvironment variables:")
-            print("  OLLAMA_MODEL - Model name (default: llama3.1:8b)")
+            print("  OLLAMA_MODEL - Model name (default: llama3.1:latest)")
             print("  OLLAMA_URL   - Ollama API URL (default: http://localhost:11434)")
             return
         else:
