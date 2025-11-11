@@ -6,6 +6,7 @@ import requests
 import json
 import sys
 import os
+import math
 from typing import Dict, Any, List, Optional
 from pathlib import Path
 from datetime import datetime
@@ -16,33 +17,33 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # Document weights mapping (user-configurable)
 DOCUMENT_WEIGHTS = {
-    "01-NIV-Bible": 3.0,
-    "02-constitution": 3.0,
-    "02a-DeclarationofIndependence": 3.0,
-    "03-Federalist Papers": 2.0,
-    "04-City of God": 3.0,
-    "05-SummaTheologica": 3.0,
-    "06-InstitutesoftheChristianReligion": 2.0,
-    "07-ThomasAKempis-TheImitationofChrist": 2.0,
-    "08-ThePilgrimsProgress-JohnBunyan": 2.0,
-    "09-LockeJohnSECONDTREATISE1690": 2.0,
-    "10-1776ThomasPaine-CommonSense": 1.0,
-    "11-spiritoflaws": 1.0,
-    "12-ReflectionsOnRevolutionInFrance": 1.0,
-    "13-lettersfromfarmerdick": 1.0,
-    "14-TheMayflowerCompact": 3.0,
-    "15-Alexis-de-Tocqueville-Democracy-in-America": 3.0,
-    "16-Organon": 3.0,
-    "17-Meditations": 1.0,
-    "18-NicomacheanEthics": 3.0,
-    "20-SenecaLetters": 3.0,
-    "21-magna-carta-translation": 1.0,
-    "22-AristotlePolitics": 1.0,
-    "23-PlutarchsLives": 1.0,
-    "24-niccolo-machiavelli-discourses-of-livy": 1.0,
-    "25-TheWealthOfNations": 1.0,
-    "26-vindiciae": 2.0,
-    "27-Leviathan": 2.0
+    "01-NIV-Bible": 100.0,
+    "02-constitution": 75.0,
+    "02a-DeclarationofIndependence": 50.0,
+    "03-Federalist Papers": 30.0,
+    "04-City of God": 40.0,
+    "05-SummaTheologica": 40.0,
+    "06-InstitutesoftheChristianReligion": 50.0,
+    "07-ThomasAKempis-TheImitationofChrist": 60.0,
+    "08-ThePilgrimsProgress-JohnBunyan": 30.0,
+    "09-LockeJohnSECONDTREATISE1690": 50.0,
+    "10-1776ThomasPaine-CommonSense": 50.0,
+    "11-spiritoflaws": 40.0,
+    "12-ReflectionsOnRevolutionInFrance": 30.0,
+    "13-lettersfromfarmerdick": 30.0,
+    "14-TheMayflowerCompact": 40.0,
+    "15-Alexis-de-Tocqueville-Democracy-in-America": 30.0,
+    "16-Organon": 75.0,
+    "17-Meditations": 60.0,
+    "18-NicomacheanEthics": 30.0,
+    "20-SenecaLetters": 30.0,
+    "21-magna-carta-translation": 20.0,
+    "22-AristotlePolitics": 30.0,
+    "23-PlutarchsLives": 30.0,
+    "24-niccolo-machiavelli-discourses-of-livy": 20.0,
+    "25-TheWealthOfNations": 45.0,
+    "26-vindiciae": 20.0,
+    "27-Leviathan": 30.0
 }
 
 # Value-conditioned system prompt
